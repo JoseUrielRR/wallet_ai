@@ -13,11 +13,10 @@ final cardsStreamProvider = StreamProvider<List<UserCard>>((ref) {
 });
 
 class CardsNotifier extends Notifier<AsyncValue<List<UserCard>>> {
-  late final ICardRepository _repository;
+  ICardRepository get _repository => ref.read(cardRepositoryProvider);
 
   @override
   AsyncValue<List<UserCard>> build() {
-    _repository = ref.watch(cardRepositoryProvider);
     _loadCards();
     return const AsyncValue.loading();
   }
@@ -25,8 +24,10 @@ class CardsNotifier extends Notifier<AsyncValue<List<UserCard>>> {
   Future<void> _loadCards() async {
     try {
       final cards = await _repository.getCards();
+      if (!ref.mounted) return;
       state = AsyncValue.data(cards);
     } catch (e, st) {
+      if (!ref.mounted) return;
       state = AsyncValue.error(e, st);
     }
   }

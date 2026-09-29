@@ -8,11 +8,10 @@ final purchaseRepositoryProvider = Provider<IPurchaseRepository>((ref) {
 });
 
 class PurchasesNotifier extends Notifier<AsyncValue<List<Purchase>>> {
-  late final IPurchaseRepository _repository;
+  IPurchaseRepository get _repository => ref.read(purchaseRepositoryProvider);
 
   @override
   AsyncValue<List<Purchase>> build() {
-    _repository = ref.watch(purchaseRepositoryProvider);
     _loadPurchases();
     return const AsyncValue.loading();
   }
@@ -20,8 +19,10 @@ class PurchasesNotifier extends Notifier<AsyncValue<List<Purchase>>> {
   Future<void> _loadPurchases() async {
     try {
       final purchases = await _repository.getPurchases();
+      if (!ref.mounted) return;
       state = AsyncValue.data(purchases);
     } catch (e, st) {
+      if (!ref.mounted) return;
       state = AsyncValue.error(e, st);
     }
   }

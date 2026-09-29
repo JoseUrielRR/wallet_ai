@@ -8,11 +8,10 @@ final loanRepositoryProvider = Provider<ILoanRepository>((ref) {
 });
 
 class LoansNotifier extends Notifier<AsyncValue<List<Loan>>> {
-  late final ILoanRepository _repository;
+  ILoanRepository get _repository => ref.read(loanRepositoryProvider);
 
   @override
   AsyncValue<List<Loan>> build() {
-    _repository = ref.watch(loanRepositoryProvider);
     _loadLoans();
     return const AsyncValue.loading();
   }
@@ -20,8 +19,10 @@ class LoansNotifier extends Notifier<AsyncValue<List<Loan>>> {
   Future<void> _loadLoans() async {
     try {
       final loans = await _repository.getLoans();
+      if (!ref.mounted) return;
       state = AsyncValue.data(loans);
     } catch (e, st) {
+      if (!ref.mounted) return;
       state = AsyncValue.error(e, st);
     }
   }
