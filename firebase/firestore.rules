@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Comprobar autenticación válida
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper: Comprobar que el usuario solo accede a sus propios datos
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Colección de Usuarios y sus subcolecciones privadas
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // Subcolección de Tarjetas del usuario
+      match /cards/{cardId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Subcolección de Compras registradas
+      match /purchases/{purchaseId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Subcolección de Préstamos
+      match /loans/{loanId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Subcolección de Notificaciones
+      match /notifications/{notificationId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Catálogo Maestro de Emisores (Bancos) - Lectura para cualquier usuario autenticado
+    match /catalog_issuers/{issuerId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Solo administradores mediante Firebase Admin SDK
+    }
+
+    // Catálogo Maestro de Productos Financieros - Lectura pública autenticada
+    match /catalog_products/{productId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Solo administradores
+    }
+
+    // Denegación por defecto para cualquier otra colección no prevista
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

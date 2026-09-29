@@ -1,0 +1,53 @@
+# Flutter and Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+.pub-cache/
+.pub/
+
+# Android
+app/android/.gradle/
+app/android/local.properties
+app/android/**/GeneratedPluginRegistrant.java
+app/android/**/*.keystore
+app/android/**/*.jks
+
+# iOS
+app/ios/Flutter/Generated.xcconfig
+app/ios/Flutter/app.framework
+app/ios/Flutter/Flutter.framework
+app/ios/Flutter/Flutter.podspec
+app/ios/Pods/
+app/ios/.symlinks/
+app/ios/Podfile.lock
+
+# macOS
+app/macos/Flutter/ephemeral/
+app/macos/Pods/
+
+# Node & Firebase
+node_modules/
+npm-debug.log
+yarn-error.log
+functions/lib/
+functions/node_modules/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Environment & Secrets
+.env
+.env*.local
+*.key
+google-services.json
+GoogleService-Info.plist
+
+# IDE & OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.bak

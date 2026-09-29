@@ -1,0 +1,117 @@
+{
+  "catalog_issuers": [
+    {
+      "id": "iss_aurora",
+      "name": "Banco Aurora",
+      "country": "MX",
+      "website": "https://aurora.example.com",
+      "colorHex": "#8A05BE",
+      "status": "active"
+    },
+    {
+      "id": "iss_horizonte",
+      "name": "Banco Horizonte",
+      "country": "MX",
+      "website": "https://horizonte.example.com",
+      "colorHex": "#004481",
+      "status": "active"
+    },
+    {
+      "id": "iss_prisma",
+      "name": "Banco Prisma",
+      "country": "MX",
+      "website": "https://prisma.example.com",
+      "colorHex": "#00A86B",
+      "status": "active"
+    }
+  ],
+  "catalog_products": [
+    {
+      "id": "prod_aurora_rewards",
+      "issuerId": "iss_aurora",
+      "name": "Aurora Black Rewards",
+      "type": "credit",
+      "country": "MX",
+      "currency": "MXN",
+      "defaultClosingDay": 14,
+      "defaultPaymentDay": 4,
+      "daysBetweenCutoffAndDue": 20,
+      "benefits": [
+        {
+          "id": "ben_aurora_super",
+          "category": "supermarket",
+          "rewardType": "cashback",
+          "rewardRate": 3.0,
+          "rewardCapCents": 50000,
+          "minimumSpendCents": 0
+        },
+        {
+          "id": "ben_aurora_dining",
+          "category": "dining",
+          "rewardType": "cashback",
+          "rewardRate": 4.0,
+          "rewardCapCents": 60000,
+          "minimumSpendCents": 0
+        },
+        {
+          "id": "ben_aurora_all",
+          "category": "all",
+          "rewardType": "cashback",
+          "rewardRate": 1.0,
+          "rewardCapCents": 0,
+          "minimumSpendCents": 0
+        }
+      ]
+    },
+    {
+      "id": "prod_horizonte_travel",
+      "issuerId": "iss_horizonte",
+      "name": "Horizonte Platinum Travel",
+      "type": "credit",
+      "country": "MX",
+      "currency": "MXN",
+      "defaultClosingDay": 28,
+      "defaultPaymentDay": 18,
+      "daysBetweenCutoffAndDue": 20,
+      "benefits": [
+        {
+          "id": "ben_horiz_travel",
+          "category": "travel",
+          "rewardType": "cashback",
+          "rewardRate": 5.0,
+          "rewardCapCents": 100000,
+          "minimumSpendCents": 100000
+        },
+        {
+          "id": "ben_horiz_fuel",
+          "category": "fuel",
+          "rewardType": "cashback",
+          "rewardRate": 2.5,
+          "rewardCapCents": 30000,
+          "minimumSpendCents": 0
+        }
+      ]
+    },
+    {
+      "id": "prod_prisma_cash",
+      "issuerId": "iss_prisma",
+      "name": "Prisma Cashback Simple",
+      "type": "credit",
+      "country": "MX",
+      "currency": "MXN",
+      "defaultClosingDay": 5,
+      "defaultPaymentDay": 25,
+      "daysBetweenCutoffAndDue": 20,
+      "benefits": [
+        {
+          "id": "ben_prisma_all",
+          "category": "all",
+          "rewardType": "cashback",
+          "rewardRate": 2.0,
+          "rewardCapCents": 80000,
+          "minimumSpendCents": 0
+        }
+      ]
+    }
+  ]
+}
