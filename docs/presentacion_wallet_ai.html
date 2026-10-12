@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet AI - Presentación Ejecutiva | TecNM ITT</title>
+  <style>
+    :root {
+      --bg-dark: #07101E;
+      --bg-card: #0F1D32;
+      --bg-card-hover: #162945;
+      --border-color: #1F3659;
+      --accent-blue: #1D63ED;
+      --accent-cyan: #00D2D3;
+      --accent-emerald: #00D26A;
+      --accent-amber: #F59E0B;
+      --accent-coral: #EF4444;
+      --accent-purple: #8B5CF6;
+      --text-main: #FFFFFF;
+      --text-muted: #94A3B8;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #030712;
+      font-family: var(--font-family);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* TOP CONTROLS */
+    .header-bar {
+      height: 48px;
+      background: rgba(15, 29, 50, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--accent-emerald);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--border-color);
+      border-color: var(--accent-blue);
+    }
+
+    .slide-counter {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* SLIDE STAGE */
+    .stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .slide-container {
+      width: 100%;
+      max-width: 1240px;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-dark);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      transform: scale(0.98);
+      display: flex;
+      flex-direction: column;
+      padding: 48px 60px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar-container {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 100%;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-emerald), var(--accent-blue));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* SLIDE STYLES */
+    /* Slide 1: Portada Institucional */
+    .cover-institutional {
+      background: #FFFFFF;
+      color: #1E293B;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .inst-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 36px;
+      margin-bottom: 24px;
+    }
+
+    .badge-logo {
+      padding: 8px 16px;
+      background: #F1F5F9;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #0F172A;
+      border: 1px solid #CBD5E1;
+    }
+
+    .cover-institutional h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #0F172A;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .cover-institutional h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1E3A8A;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .inst-dept {
+      font-size: 15px;
+      color: #475569;
+      font-weight: 600;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .inst-info-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 20px 36px;
+      max-width: 650px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .inst-info-row {
+      display: flex;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .inst-info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .inst-label {
+      width: 220px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .inst-val {
+      flex: 1;
+      color: #0F172A;
+      font-weight: 600;
+    }
+
+    /* Slide 2: Project Title */
+    .cover-project {
+      background: radial-gradient(circle at 85% 20%, #17325C 0%, #07101E 70%);
+      justify-content: center;
+      padding-left: 80px;
+      position: relative;
+    }
+
+    .cover-project-title {
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #FFFFFF 40%, var(--accent-emerald) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-project-subtitle {
+      font-size: 18px;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      max-width: 600px;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    .cover-project-tags {
+      display: flex;
+      gap: 12px;
+    }
+
+    .tag-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .geometric-art {
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      height: 320px;
+      border: 2px solid rgba(0, 210, 211, 0.25);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(29, 99, 237, 0.2), rgba(0, 210, 106, 0.1));
+    }
+
+    .geometric-art-inner {
+      width: 220px;
+      height: 140px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1D63ED, #00D26A);
+      box-shadow: 0 20px 40px rgba(0, 210, 106, 0.3);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #FFF;
+    }
+
+    /* Common Slide Title */
+    .slide-header {
+      margin-bottom: 28px;
+    }
+
+    .slide-category {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent-emerald);
+      margin-bottom: 6px;
+    }
+
+    .slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+    }
+
+    /* Grid & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      height: calc(100% - 80px);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      height: calc(100% - 80px);
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      height: calc(100% - 80px);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card-badge {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 14px;
+      width: fit-content;
+    }
+
+    .badge-blue { background: rgba(29, 99, 237, 0.2); color: #60A5FA; border: 1px solid rgba(29, 99, 237, 0.4); }
+    .badge-green { background: rgba(0, 210, 106, 0.2); color: #34D399; border: 1px solid rgba(0, 210, 106, 0.4); }
+    .badge-amber { background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .badge-purple { background: rgba(139, 92, 246, 0.2); color: #A78BFA; border: 1px solid rgba(139, 92, 246, 0.4); }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #FFFFFF;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Slide: Objetivos Específicos (Dentique Style) */
+    .obj-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+      height: calc(100% - 90px);
+    }
+
+    .obj-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 0 8px;
+    }
+
+    .obj-col:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 30px;
+      bottom: 20px;
+      width: 1px;
+      background: dashed rgba(255, 255, 255, 0.15);
+      border-right: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .obj-num-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1D63ED, #00D26A);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 900;
+      color: #FFF;
+      box-shadow: 0 10px 25px rgba(29, 99, 237, 0.4);
+      margin-bottom: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .obj-num-circle.alt {
+      background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    .obj-text {
+      font-size: 14px;
+      color: #E2E8F0;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    /* Mockup UI */
+    .mockup-container {
+      display: flex;
+      gap: 24px;
+      height: calc(100% - 80px);
+    }
+
+    .mockup-phone {
+      width: 320px;
+      background: #000;
+      border: 3px solid #334155;
+      border-radius: 28px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    }
+
+    .mockup-screen {
+      flex: 1;
+      background: #0D1117;
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .mockup-card-hero {
+      background: linear-gradient(135deg, #161B22, #21262D);
+      border: 1px solid #30363D;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .mockup-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    /* Gantt Chart (Dentique Style) */
+    .gantt-chart {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 80px);
+      justify-content: space-around;
+      position: relative;
+    }
+
+    .gantt-row {
+      display: flex;
+      align-items: center;
+      height: 28px;
+      position: relative;
+    }
+
+    .gantt-label {
+      width: 260px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #E2E8F0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gantt-track {
+      flex: 1;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 6px;
+      position: relative;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gantt-bar {
+      position: absolute;
+      height: 18px;
+      top: 5px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      color: #FFF;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .gantt-axis {
+      display: flex;
+      margin-left: 260px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 6px;
+    }
+
+    .gantt-axis-col {
+      flex: 1;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* End Slide */
+    .cover-end {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: radial-gradient(circle at 50% 50%, #17325C 0%, #07101E 75%);
+    }
+
+    .cover-end h1 {
+      font-size: 54px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #FFF, var(--accent-emerald));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-end p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    /* PRINT STYLES FOR EXPORT TO PDF */
+    @media print {
+      body {
+        overflow: visible !important;
+        background: #FFF !important;
+      }
+      .header-bar, .progress-bar-container {
+        display: none !important;
+      }
+      .stage {
+        padding: 0 !important;
+        display: block !important;
+      }
+      .slide-container {
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        overflow: visible !important;
+        aspect-ratio: auto !important;
+      }
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        border: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER & CONTROLS -->
+  <div class="header-bar">
+    <div class="brand-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="5" width="20" height="14" rx="3"></rect>
+        <line x1="2" y1="10" x2="22" y2="10"></line>
+      </svg>
+      WALLET AI • DISEÑO Y EVALUACIÓN DE INTERFACES
+    </div>
+    <div class="controls-group">
+      <button class="btn" onclick="prevSlide()" title="Anterior (Flecha Izquierda)">
+        ◀ Anterior
+      </button>
+      <span class="slide-counter" id="slideIndicator">1 / 12</span>
+      <button class="btn" onclick="nextSlide()" title="Siguiente (Flecha Derecha o Espacio)">
+        Siguiente ▶
+      </button>
+      <button class="btn" onclick="toggleFullScreen()" title="Pantalla Completa (F)">
+        ⛶ Pantalla Completa
+      </button>
+      <button class="btn" onclick="window.print()" title="Imprimir / Exportar a PDF">
+        ⎙ Exportar PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <!-- SLIDES STAGE -->
+  <div class="stage">
+    <div class="slide-container">
+
+      <!-- SLIDE 1: PORTADA INSTITUCIONAL (TECNM / ITT) -->
+      <div class="slide cover-institutional active">
+        <div class="inst-logos">
+          <div class="badge-logo" style="color: #1E3A8A; border-color: #1E3A8A;">TECNM MÉXICO</div>
+          <div class="badge-logo" style="color: #991B1B; border-color: #991B1B;">EDUCACIÓN SEP</div>
+          <div class="badge-logo" style="color: #065F46; border-color: #065F46;">INSTITUTO TECNOLÓGICO DE TIJUANA</div>
+        </div>
+
+        <h1>Tecnológico Nacional de México</h1>
+        <h2>Instituto Tecnológico de Tijuana</h2>
+
+        <div class="inst-dept">
+          SUBDIRECCIÓN ACADÉMICA<br>
+          DEPARTAMENTO DE SISTEMAS Y COMPUTACIÓN
+        </div>
+
+        <div class="inst-info-box">
+          <div class="inst-info-row">
+            <div class="inst-label">CARRERA:</div>
+            <div class="inst-val">INGENIERÍA EN SISTEMAS COMPUTACIONALES</div>
+          </div>
+          <div class="inst-info-row">
+            <div class="inst-label">MATERIA:</div>
+            <div class="inst-val">DISEÑO Y EVALUACIÓN DE INTERFACES DE USUARIO</div>
+          </div>
+          <div class="inst-info-row">
+            <div class="inst-label">PROYECTO:</div>
+            <div class="inst-val">WALLET AI (CLOUD FINTECH ASSISTANT)</div>
+          </div>
+          <div class="inst-info-row">
+            <div class="inst-label">ALUMNO Y N° CONTROL:</div>
+            <div class="inst-val">URIEL RODRÍGUEZ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: PORTADA DEL PROYECTO -->
+      <div class="slide cover-project">
+        <div class="slide-category">Plataforma en la Nube</div>
+        <div class="cover-project-title">Wallet AI</div>
+        <div class="cover-project-subtitle">
+          Software para la Optimización Inteligente de Tarjetas de Crédito y Beneficios Financieros
+        </div>
+        <div class="cover-project-tags">
+          <div class="tag-pill">🚀 Google Cloud & Firebase</div>
+          <div class="tag-pill">🔒 Zero-Knowledge Security</div>
+          <div class="tag-pill">📱 Flutter Multiplataforma</div>
+          <div class="tag-pill">⚡ Modo Offline-First</div>
+        </div>
+
+        <div class="geometric-art">
+          <div class="geometric-art-inner">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; font-weight:800; letter-spacing:1px;">WALLET AI</span>
+              <span style="font-size:16px;">💳</span>
+            </div>
+            <div style="font-size:18px; font-weight:700; letter-spacing:2px;">•••• 4892</div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; opacity:0.9;">
+              <span>CORTE: DÍA 14</span>
+              <span>+42 DÍAS LIBRES</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: PROPUESTA -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Propuesta de Valor</div>
+          <div class="slide-title">Propuesta de Solución</div>
+        </div>
+        <div class="grid-2">
+          <div class="card" style="justify-content: center; background: linear-gradient(135deg, #0F1D32, #172D4D);">
+            <div class="card-badge badge-green">Copiloto Proactivo</div>
+            <p style="font-size: 18px; line-height: 1.6; color: #F1F5F9; font-weight: 500;">
+              Herramienta y plataforma en la nube que actúa como un <strong>copiloto financiero inteligente</strong>, capaz de responder en tiempo real a la pregunta diaria:
+            </p>
+            <div style="margin-top: 18px; padding: 14px; background: rgba(0, 210, 106, 0.1); border-left: 4px solid var(--accent-emerald); border-radius: 6px; font-size: 16px; font-weight: 700; color: #FFF;">
+              "¿Qué tarjeta me conviene utilizar hoy y por qué?"
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-badge badge-blue">Diferenciadores Clave</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 14px; font-size: 14px; color: #CBD5E1;">
+              <li style="display: flex; gap: 10px;">
+                <span style="color: var(--accent-emerald); font-weight: bold;">✔</span>
+                <span><strong>Optimización Matemática:</strong> Determina la tarjeta con mayor tiempo de financiamiento libre de intereses (hasta 50 días).</span>
+              </li>
+              <li style="display: flex; gap: 10px;">
+                <span style="color: var(--accent-cyan); font-weight: bold;">✔</span>
+                <span><strong>Maximizador de Recompensas:</strong> Evalúa categorías para obtener el máximo cashback neto proyectado en pesos.</span>
+              </li>
+              <li style="display: flex; gap: 10px;">
+                <span style="color: var(--accent-amber); font-weight: bold;">✔</span>
+                <span><strong>Seguridad Zero-Knowledge:</strong> No solicita contraseñas bancarias ni números completos (PAN/CVV).</span>
+              </li>
+              <li style="display: flex; gap: 10px;">
+                <span style="color: var(--accent-purple); font-weight: bold;">✔</span>
+                <span><strong>Modo Híbrido:</strong> Funcionalidad 100% interactiva en la nube y resiliencia offline en punto de venta.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: JUSTIFICACIÓN -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Fundamentación</div>
+          <div class="slide-title">Justificación del Proyecto</div>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-badge badge-amber">Problemática Real</div>
+            <div class="card-title">Fragmentación Bancaria</div>
+            <div class="card-desc">
+              Los usuarios manejan entre 2 y 4 tarjetas de diferentes bancos (Nu, BBVA, Amex). Las apps bancarias son silos cerrados que no cooperan entre sí, imposibilitando una estrategia financiera unificada.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-badge badge-coral" style="background: rgba(239, 68, 68, 0.2); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.4);">Costos Invisibles</div>
+            <div class="card-title">Intereses y Pérdidas</div>
+            <div class="card-desc">
+              Comprar un día antes del corte obliga a pagar en 15 días en vez de 50. Olvidar fechas límite genera comisiones e intereses moratorios, mientras que el uso incorrecto pierde cientos de pesos en cashback.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-badge badge-green">Solución Wallet AI</div>
+            <div class="card-title">Control y Bienestar</div>
+            <div class="card-desc">
+              Wallet AI transforma reglas complejas de facturación en decisiones simples y seguras en la nube, brindando tranquilidad mental y maximizando el poder adquisitivo del usuario sin comprometer sus accesos.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: OBJETIVO GENERAL -->
+      <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+        <div class="slide-category" style="margin-bottom: 12px;">Meta Principal</div>
+        <div class="slide-title" style="font-size: 38px; margin-bottom: 24px;">Objetivo General</div>
+        
+        <div class="card" style="max-width: 900px; padding: 36px 48px; background: linear-gradient(135deg, #0F1D32, #162945); border-color: var(--accent-blue);">
+          <p style="font-size: 21px; line-height: 1.6; color: #FFFFFF; font-weight: 500;">
+            Desarrollar un software en la nube con una <strong>interfaz de usuario reactiva, intuitiva y accesible</strong> que centralice y optimice los procesos de gestión de tarjetas de crédito y préstamos personales, transformando reglas de facturación en <strong>recomendaciones financieras deterministas en tiempo real</strong>, promoviendo una gestión eficiente, segura y privada de la información.
+          </p>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: OBJETIVOS ESPECÍFICOS (01 - 04) -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Metas Medibles</div>
+          <div class="slide-title">Objetivos Específicos (Parte 1)</div>
+        </div>
+        <div class="obj-row">
+          <div class="obj-col">
+            <div class="obj-num-circle">01</div>
+            <div class="obj-text">
+              <strong>Diseñar Interfaz Moderna e Intuitiva</strong><br><br>
+              Apegada a Material Design 3, garantizando accesibilidad WCAG 2.1 AA y reduciendo el tiempo de registro a menos de 90 segundos.
+            </div>
+          </div>
+          <div class="obj-col">
+            <div class="obj-num-circle">02</div>
+            <div class="obj-text">
+              <strong>Gestión Digital de Billetera</strong><br><br>
+              Implementar un módulo integral (CRUD) para administrar tarjetas, límites de crédito, días de corte y préstamos personales en la nube.
+            </div>
+          </div>
+          <div class="obj-col">
+            <div class="obj-num-circle">03</div>
+            <div class="obj-text">
+              <strong>Motor de Recomendación en Tiempo Real</strong><br><br>
+              Desarrollar algoritmos deterministas que calculan y destacan en el Dashboard la tarjeta del día con mayor beneficio y liquidez.
+            </div>
+          </div>
+          <div class="obj-col">
+            <div class="obj-num-circle">04</div>
+            <div class="obj-text">
+              <strong>Simulador de Compras en Caja</strong><br><br>
+              Crear el módulo "Smart Purchase" para evaluar importes y categorías (Supermercado, Gasolina) antes de pagar en punto de venta.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: OBJETIVOS ESPECÍFICOS (05 - 08) -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Metas Medibles</div>
+          <div class="slide-title">Objetivos Específicos (Parte 2)</div>
+        </div>
+        <div class="obj-row">
+          <div class="obj-col">
+            <div class="obj-num-circle alt">05</div>
+            <div class="obj-text">
+              <strong>Calendario Financiero de Alertas</strong><br><br>
+              Implementar una agenda mensual interactiva con codificación cromática para prevenir olvidos de pago y cobros moratorios.
+            </div>
+          </div>
+          <div class="obj-col">
+            <div class="obj-num-circle alt">06</div>
+            <div class="obj-text">
+              <strong>Seguridad Cloud Zero-Knowledge</strong><br><br>
+              Configurar reglas estrictas de Firestore (<code style="color:var(--accent-cyan);">isOwner</code>) y enmascaramiento visual de plásticos (•••• 1234).
+            </div>
+          </div>
+          <div class="obj-col">
+            <div class="obj-num-circle alt">07</div>
+            <div class="obj-text">
+              <strong>Resiliencia Offline-First</strong><br><br>
+              Asegurar una disponibilidad del 99.9% y sincronización automática en caché local ante intermitencias de red.
+            </div>
+          </div>
+          <div class="obj-col">
+            <div class="obj-num-circle alt">08</div>
+            <div class="obj-text">
+              <strong>Evaluación de Usabilidad Rigurosa</strong><br><br>
+              Realizar evaluación heurística (Nielsen) y pruebas con usuarios, logrando un puntaje superior a 80 puntos en escala SUS.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: ARQUITECTURA DE INFORMACIÓN -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Arquitectura UX</div>
+          <div class="slide-title">Mapa de Navegación del Sistema</div>
+        </div>
+        <div class="grid-2">
+          <div class="card" style="justify-content: space-around;">
+            <div style="font-size: 15px; font-weight: 700; color: var(--accent-emerald);">FLUJO PRINCIPAL DE PANTALLAS</div>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+              <div style="padding: 10px; background: rgba(29, 99, 237, 0.15); border: 1px solid var(--accent-blue); border-radius: 8px;">
+                <strong>1. Pantalla de Acceso (Auth Gate):</strong> Login / Registro seguro con Firebase Auth.
+              </div>
+              <div style="padding: 10px; background: rgba(0, 210, 106, 0.15); border: 1px solid var(--accent-emerald); border-radius: 8px;">
+                <strong>2. App Shell (Bottom Navigation Bar / Rail):</strong> Navegación persistente entre 5 destinos.
+              </div>
+              <div style="padding: 10px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); border-radius: 8px;">
+                <strong>3. Modales Asistidos:</strong> Simulador de compra rápida, alta de tarjeta y confirmación de pago.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="font-size: 15px; font-weight: 700; color: #FFF; margin-bottom: 12px;">ESTRUCTURA DE LOS 5 MÓDULOS</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-muted);">
+              <li>🔹 <strong>Inicio (Dashboard):</strong> Hero Card de la tarjeta recomendada + saldo disponible global.</li>
+              <li>🔹 <strong>Billetera (Cards & Loans):</strong> Plásticos virtuales, barras de ciclo y límites.</li>
+              <li>🔹 <strong>Calendario Financiero:</strong> Fechas de corte, límites de pago y cuotas.</li>
+              <li>🔹 <strong>Actividad (Purchases):</strong> Registro y clasificación de compras históricas.</li>
+              <li>🔹 <strong>Perfil & Preferencias:</strong> Modo Demo / Cloud, tema visual y seguridad.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 9: DISEÑO DE INTERFAZ / PROTOTIPO -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Prototipo Interactivo</div>
+          <div class="slide-title">Diseño de la Interfaz en Flutter</div>
+        </div>
+        <div class="mockup-container">
+          <!-- PHONE PREVIEW -->
+          <div class="mockup-phone">
+            <div class="mockup-screen">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+                <span style="color: #94A3B8;">Hola, Alex 👋</span>
+                <span style="background: rgba(0,210,106,0.2); color:#00D26A; padding:2px 6px; border-radius:4px; font-size:9px;">EN LÍNEA</span>
+              </div>
+              <!-- HERO CARD -->
+              <div class="mockup-card-hero">
+                <div style="display:flex; justify-content:space-between; font-size:10px; color:#34D399; font-weight:700;">
+                  <span>🌟 MEJOR OPCIÓN HOY</span>
+                  <span>NU MASTERCARD</span>
+                </div>
+                <div style="font-size:16px; font-weight:800; color:#FFF; margin:4px 0;">+42 Días Libres</div>
+                <div style="font-size:10px; color:#94A3B8;">Corte reciente • 2% Cashback en compras</div>
+                <div style="margin-top:8px; display:flex; gap:6px;">
+                  <div style="flex:1; background:var(--accent-blue); padding:4px; text-align:center; border-radius:4px; font-size:9px; font-weight:700; color:#FFF;">Simular</div>
+                  <div style="flex:1; background:#30363D; padding:4px; text-align:center; border-radius:4px; font-size:9px; color:#FFF;">Detalles</div>
+                </div>
+              </div>
+              <!-- STATS -->
+              <div style="display:flex; gap:8px;">
+                <div style="flex:1; background:#161B22; padding:8px; border-radius:8px; border:1px solid #30363D;">
+                  <div style="font-size:9px; color:#8B949E;">LÍMITE TOTAL</div>
+                  <div style="font-size:12px; font-weight:700; color:#FFF;">$94,500</div>
+                </div>
+                <div style="flex:1; background:#161B22; padding:8px; border-radius:8px; border:1px solid #30363D;">
+                  <div style="font-size:9px; color:#8B949E;">DISPONIBLE</div>
+                  <div style="font-size:12px; font-weight:700; color:#00D26A;">$76,300</div>
+                </div>
+              </div>
+              <!-- CARD ITEM -->
+              <div style="background:#161B22; border:1px solid #30363D; border-radius:8px; padding:8px; font-size:10px;">
+                <div style="display:flex; justify-content:space-between;">
+                  <span style="font-weight:700;">BBVA Oro (•••• 1234)</span>
+                  <span style="color:#F59E0B;">Paga en 4 días</span>
+                </div>
+                <div style="height:4px; background:#30363D; border-radius:2px; margin-top:4px; overflow:hidden;">
+                  <div style="width:70%; height:100%; background:#F59E0B;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DETAILS COLUMN -->
+          <div class="mockup-details">
+            <div class="card">
+              <div class="card-title">Estética Fintech Minimalista</div>
+              <div class="card-desc">
+                Paleta en modo oscuro inspirada en obsidian (#0D1117) con acentos esmeralda y ámbar cálido. Elimina colores rojos punitivos para promover calma financiera y concentración en la toma de decisión.
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">Microinteracciones a 60 FPS</div>
+              <div class="card-desc">
+                Animaciones suaves en transiciones de tarjetas, formateo monetario instantáneo en el simulador de compra y skeleton shimmers durante la sincronización con Cloud Firestore.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: PLAN DE EVALUACIÓN -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Validación y Métricas</div>
+          <div class="slide-title">Plan de Evaluación de la Interfaz</div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-badge badge-blue">Método 1</div>
+            <div class="card-title">Evaluación Heurística (Nielsen)</div>
+            <div class="card-desc" style="margin-bottom: 12px;">
+              Inspección técnica experta de los <strong>10 principios de Jakob Nielsen</strong> con matriz de severidad (0 = Sin problema a 4 = Catastrófico):
+            </div>
+            <ul style="font-size: 13px; color: var(--text-muted); display:flex; flex-direction:column; gap:6px;">
+              <li>• Visibilidad de estado (shimmers y badges cloud).</li>
+              <li>• Prevención de errores en validación de cortes (1-31).</li>
+              <li>• Reconocimiento sobre recuerdo (categorías con icono).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-badge badge-green">Método 2</div>
+            <div class="card-title">Pruebas con Usuarios & SUS</div>
+            <div class="card-desc" style="margin-bottom: 12px;">
+              Sesiones con 6 a 8 usuarios ejecutando 5 tareas clave (alta de tarjeta, recomendación diaria, simulador, calendario):
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:12px;">
+              <div style="background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between;">
+                <span>Tasa de Éxito de Tareas (TSR)</span>
+                <strong style="color:var(--accent-emerald);">Meta ≥ 90%</strong>
+              </div>
+              <div style="background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between;">
+                <span>Tiempo Promedio por Tarea</span>
+                <strong style="color:var(--accent-cyan);">&lt; 60 segundos</strong>
+              </div>
+              <div style="background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between;">
+                <span>Escala de Usabilidad SUS</span>
+                <strong style="color:var(--accent-emerald);">&gt; 80 pts (Excelente)</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 11: CRONOGRAMA DE TRABAJO -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-category">Planificación Temporal</div>
+          <div class="slide-title">Cronograma de Trabajo (11 Semanas)</div>
+        </div>
+        <div class="gantt-chart">
+          
+          <div class="gantt-row">
+            <div class="gantt-label">Investigación y UX Research</div>
+            <div class="gantt-track">
+              <div class="gantt-bar" style="left:0%; width:18%; background:#0284C7;">Sem 1 - 2 (Completado)</div>
+            </div>
+          </div>
+
+          <div class="gantt-row">
+            <div class="gantt-label">Arquitectura Cloud & Flutter</div>
+            <div class="gantt-track">
+              <div class="gantt-bar" style="left:18%; width:18%; background:#10B981;">Sem 3 - 4 (Completado)</div>
+            </div>
+          </div>
+
+          <div class="gantt-row">
+            <div class="gantt-label">Motores & Simulador Compras</div>
+            <div class="gantt-track">
+              <div class="gantt-bar" style="left:36%; width:18%; background:#3B82F6;">Sem 5 - 6 (En curso)</div>
+            </div>
+          </div>
+
+          <div class="gantt-row">
+            <div class="gantt-label">Calendario & Préstamos</div>
+            <div class="gantt-track">
+              <div class="gantt-bar" style="left:45%; width:18%; background:#F59E0B;">Sem 5 - 6</div>
+            </div>
+          </div>
+
+          <div class="gantt-row">
+            <div class="gantt-label">Evaluación Heurística (Nielsen)</div>
+            <div class="gantt-track">
+              <div class="gantt-bar" style="left:55%; width:18%; background:#8B5CF6;">Sem 7 - 8</div>
+            </div>
+          </div>
+
+          <div class="gantt-row">
+            <div class="gantt-label">Pruebas con Usuarios & SUS</div>
+            <div class="gantt-track">
+              <div class="gantt-bar" style="left:73%; width:18%; background:#EC4899;">Sem 9 - 10</div>
+            </div>
+          </div>
+
+          <div class="gantt-row">
+            <div class="gantt-label">Reporte Final y Entrega</div>
+            <div class="gantt-track">
+              <div class="gantt-bar" style="left:91%; width:9%; background:#EF4444;">Sem 11 (27 Nov)</div>
+            </div>
+          </div>
+
+          <div class="gantt-axis">
+            <div class="gantt-axis-col">1</div>
+            <div class="gantt-axis-col">2</div>
+            <div class="gantt-axis-col">3</div>
+            <div class="gantt-axis-col">4</div>
+            <div class="gantt-axis-col">5</div>
+            <div class="gantt-axis-col">6</div>
+            <div class="gantt-axis-col">7</div>
+            <div class="gantt-axis-col">8</div>
+            <div class="gantt-axis-col">9</div>
+            <div class="gantt-axis-col">10</div>
+            <div class="gantt-axis-col">11</div>
+          </div>
+          <div style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:4px;">
+            SEMANAS DE TRABAJO (14 DE SEPTIEMBRE AL 27 DE NOVIEMBRE DE 2026)
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 12: CIERRE / PREGUNTAS -->
+      <div class="slide cover-end">
+        <h1>GRACIAS POR SU ATENCIÓN</h1>
+        <p>Wallet AI: Plataforma Inteligente en la Nube para la Optimización Financiera</p>
+        
+        <div style="display:flex; gap:16px; justify-content:center;">
+          <div class="badge-logo" style="background:#0F1D32; color:#FFF; border-color:var(--border-color);">
+            Tecnológico Nacional de México
+          </div>
+          <div class="badge-logo" style="background:#0F1D32; color:var(--accent-emerald); border-color:var(--accent-emerald);">
+            Instituto Tecnológico de Tijuana
+          </div>
+        </div>
+        <div style="margin-top:24px; font-size:14px; color:var(--text-muted);">
+          Diseño y Evaluación de Interfaces de Usuario • Uriel Rodríguez
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const indicator = document.getElementById('slideIndicator');
+    const progressBar = document.getElementById('progressBar');
+
+    function updateSlide() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+      indicator.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(`Error al intentar pantalla completa: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>

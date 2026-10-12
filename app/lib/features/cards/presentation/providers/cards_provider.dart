@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../data/repositories/card_repository_impl.dart';
 import '../../domain/models/user_card.dart';
 import '../../domain/repositories/card_repository.dart';
-import '../../data/repositories/local_card_repository.dart';
 
 final cardRepositoryProvider = Provider<ICardRepository>((ref) {
-  return LocalCardRepository();
+  final userId = ref.watch(currentUserIdProvider);
+  return CardRepositoryImpl(getUserId: () => userId);
 });
 
 final cardsStreamProvider = StreamProvider<List<UserCard>>((ref) {

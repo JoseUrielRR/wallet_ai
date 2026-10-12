@@ -1,10 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../data/repositories/purchase_repository_impl.dart';
 import '../../domain/models/purchase.dart';
 import '../../domain/repositories/purchase_repository.dart';
-import '../../data/repositories/local_purchase_repository.dart';
 
 final purchaseRepositoryProvider = Provider<IPurchaseRepository>((ref) {
-  return LocalPurchaseRepository();
+  final userId = ref.watch(currentUserIdProvider);
+  return PurchaseRepositoryImpl(getUserId: () => userId);
+});
+
+final purchasesStreamProvider = StreamProvider<List<Purchase>>((ref) {
+  final repo = ref.watch(purchaseRepositoryProvider);
+  return repo.watchPurchases();
 });
 
 class PurchasesNotifier extends Notifier<AsyncValue<List<Purchase>>> {
@@ -43,4 +50,7 @@ class PurchasesNotifier extends Notifier<AsyncValue<List<Purchase>>> {
   }
 }
 
-final purchasesProvider = NotifierProvider<PurchasesNotifier, AsyncValue<List<Purchase>>>(PurchasesNotifier.new);
+final purchasesProvider =
+    NotifierProvider<PurchasesNotifier, AsyncValue<List<Purchase>>>(
+  PurchasesNotifier.new,
+);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
-import 'features/shell/presentation/screens/app_shell_screen.dart';
+import 'features/auth/presentation/screens/auth_gate.dart';
 
 class WalletAiApp extends StatelessWidget {
   const WalletAiApp({super.key});
@@ -13,8 +13,8 @@ class WalletAiApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark, // Default Fintech Theme
-      home: const AppShellScreen(),
+      themeMode: ThemeMode.light, // Modern Minimalist Soft UI Theme
+      home: const AuthGate(),
     );
   }
 }

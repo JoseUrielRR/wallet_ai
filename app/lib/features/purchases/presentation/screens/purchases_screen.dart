@@ -19,6 +19,7 @@ class _PurchasesScreenState extends ConsumerState<PurchasesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final purchasesAsync = ref.watch(purchasesProvider);
     final purchases = purchasesAsync.value ?? [];
 
@@ -26,23 +27,36 @@ class _PurchasesScreenState extends ConsumerState<PurchasesScreen> {
         ? purchases
         : purchases.where((p) => p.category == _selectedCategory).toList();
 
+    // Ordenar cronológicamente (más recientes primero)
+    final sortedPurchases = List.of(filteredPurchases)
+      ..sort((a, b) => b.purchaseDate.compareTo(a.purchaseDate));
+
     final totalSpent = purchases.fold<int>(0, (sum, p) => sum + p.amountCents);
     final totalReward = purchases.fold<int>(0, (sum, p) => sum + p.estimatedRewardCents);
 
     return Scaffold(
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.softBackground,
       appBar: AppBar(
-        title: const Text('Actividad y Compras', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Actividad y Movimientos', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Column(
         children: [
-          // Resumen de Gastos y Cashback
+          // Resumen de Gastos y Cashback Soft UI
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: AppColors.darkSurface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.darkBorder),
+              color: isDark ? AppColors.darkSurface : AppColors.softSurface,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(
+                color: isDark ? AppColors.glassWhite : AppColors.softBorder,
+                width: 1,
+              ),
+              boxShadow: isDark
+                  ? null
+                  : const [
+                      AppColors.softShadow,
+                    ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,14 +64,21 @@ class _PurchasesScreenState extends ConsumerState<PurchasesScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Total Registrado', style: TextStyle(color: AppColors.textMediumDark, fontSize: 12)),
+                    Text(
+                      'Total Registrado',
+                      style: TextStyle(
+                        color: isDark ? AppColors.textMediumDark : AppColors.slate500,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     Text(
                       MoneyFormatter.formatCents(totalSpent),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textHighDark,
+                      style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w800,
+                        color: isDark ? AppColors.textHighDark : AppColors.slate900,
                       ),
                     ),
                   ],
@@ -65,14 +86,30 @@ class _PurchasesScreenState extends ConsumerState<PurchasesScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Text('Cashback Acumulado', style: TextStyle(color: AppColors.textMediumDark, fontSize: 12)),
-                    const SizedBox(height: 4),
                     Text(
-                      '+${MoneyFormatter.formatCents(totalReward)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.brandPrimary,
+                      'Cashback Acumulado',
+                      style: TextStyle(
+                        color: isDark ? AppColors.textMediumDark : AppColors.slate500,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? AppColors.brandPrimary.withValues(alpha: 0.15)
+                            : AppColors.pastelMintBg,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '+${MoneyFormatter.formatCents(totalReward)}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.pastelMintText,
+                        ),
                       ),
                     ),
                   ],
@@ -81,10 +118,10 @@ class _PurchasesScreenState extends ConsumerState<PurchasesScreen> {
             ),
           ),
 
-          // Filtro por Categorías
+          // Filtro por Categorías Soft Pastel
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             child: Row(
               children: [
                 FilterChip(
@@ -113,20 +150,22 @@ class _PurchasesScreenState extends ConsumerState<PurchasesScreen> {
           ),
           const SizedBox(height: 4),
 
-          // Lista de Compras
+          // Lista de Compras Cronológica
           Expanded(
-            child: filteredPurchases.isEmpty
-                ? const Center(
+            child: sortedPurchases.isEmpty
+                ? Center(
                     child: Text(
                       'No hay compras registradas en esta categoría.',
-                      style: TextStyle(color: AppColors.textSubtleDark),
+                      style: TextStyle(
+                        color: isDark ? AppColors.textSubtleDark : AppColors.slate400,
+                      ),
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    itemCount: filteredPurchases.length,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    itemCount: sortedPurchases.length,
                     itemBuilder: (context, index) {
-                      return PurchaseTile(purchase: filteredPurchases[index]);
+                      return PurchaseTile(purchase: sortedPurchases[index]);
                     },
                   ),
           ),
@@ -138,10 +177,11 @@ class _PurchasesScreenState extends ConsumerState<PurchasesScreen> {
             MaterialPageRoute(builder: (_) => const PurchaseFormScreen()),
           );
         },
-        icon: const Icon(Icons.add_shopping_cart),
+        icon: const Icon(Icons.add_shopping_cart_rounded),
         label: const Text('Nueva Compra'),
         backgroundColor: AppColors.brandPrimary,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        elevation: 2,
       ),
     );
   }

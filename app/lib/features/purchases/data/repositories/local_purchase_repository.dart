@@ -69,11 +69,11 @@ class LocalPurchaseRepository implements IPurchaseRepository {
             .map((item) => Purchase.fromMap(item as Map<String, dynamic>))
             .toList();
       } else {
-        _cachedPurchases = List.from(_initialDemoPurchases);
+        _cachedPurchases = [];
         await _saveToDisk();
       }
     } catch (_) {
-      _cachedPurchases = List.from(_initialDemoPurchases);
+      _cachedPurchases = [];
     }
     _initialized = true;
     _streamController.add(_cachedPurchases);

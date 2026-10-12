@@ -3,6 +3,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../engine/models/recommendation_result.dart';
 
+/// Tarjeta Hero Recomendada del Día con estética Modern Minimalist & Soft UI Pastel.
 class HeroRecommendationCard extends StatelessWidget {
   final RecommendationResult recommendation;
   final VoidCallback onSimulateTap;
@@ -17,31 +18,55 @@ class HeroRecommendationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (!recommendation.hasRecommendation) {
-      return Card(
-        color: AppColors.darkSurface,
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                children: [
-                  Icon(Icons.info_outline, color: AppColors.warning, size: 20),
-                  SizedBox(width: 8),
-                  Text(
-                    'Recomendación del día',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text(
-                recommendation.summaryExplanation,
-                style: const TextStyle(color: AppColors.textMediumDark),
-              ),
-            ],
+      return Container(
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkSurface : AppColors.softSurface,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(
+            color: isDark ? AppColors.darkBorder : AppColors.softBorder,
+            width: 1,
           ),
+          boxShadow: const [AppColors.softShadow],
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.pastelAmberBg,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.pastelAmberBorder),
+                  ),
+                  child: const Icon(Icons.info_outline_rounded, color: AppColors.pastelAmberText, size: 16),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'Recomendación del día',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: isDark ? AppColors.textHighDark : AppColors.slate900,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              recommendation.summaryExplanation,
+              style: TextStyle(
+                color: isDark ? AppColors.textMediumDark : AppColors.slate500,
+                height: 1.45,
+                fontSize: 13,
+              ),
+            ),
+          ],
         ),
       );
     }
@@ -49,28 +74,41 @@ class HeroRecommendationCard extends StatelessWidget {
     final winner = recommendation.winner!;
     final card = winner.card;
     final cycle = winner.cycleResult;
+    final cardDisplayName = card.alias.isNotEmpty ? card.alias : card.productName;
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF1C2D27),
-            Color(0xFF161B22),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(24),
+        gradient: isDark
+            ? AppColors.heroBackground
+            : const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFFE8F9F0),
+                  Color(0xFFF3FAF6),
+                  Colors.white,
+                ],
+                stops: [0.0, 0.45, 1.0],
+              ),
         border: Border.all(
-          color: AppColors.brandPrimary.withValues(alpha: 0.4),
-          width: 1.5,
+          color: isDark
+              ? AppColors.brandPrimary.withValues(alpha: 0.35)
+              : AppColors.pastelMintBorder,
+          width: 1.2,
         ),
         boxShadow: [
-          BoxShadow(
-            color: AppColors.brandPrimary.withValues(alpha: 0.12),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
+          isDark
+              ? BoxShadow(
+                  color: AppColors.brandPrimary.withValues(alpha: 0.12),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                )
+              : const BoxShadow(
+                  color: Color(0x0C059669),
+                  blurRadius: 20,
+                  offset: Offset(0, 8),
+                ),
         ],
       ),
       padding: const EdgeInsets.all(20),
@@ -81,97 +119,136 @@ class HeroRecommendationCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.brandPrimary.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: AppColors.brandPrimary.withValues(alpha: 0.6),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4.5),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? AppColors.brandPrimary.withValues(alpha: 0.15)
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isDark
+                          ? AppColors.brandPrimary.withValues(alpha: 0.45)
+                          : AppColors.pastelMintBorder,
+                    ),
+                    boxShadow: isDark
+                        ? null
+                        : const [
+                            BoxShadow(
+                              color: Color(0x06000000),
+                              blurRadius: 4,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.auto_awesome,
+                        color: AppColors.pastelMintText,
+                        size: 13,
+                      ),
+                      const SizedBox(width: 5),
+                      Flexible(
+                        child: Text(
+                          'IA RECOMIENDA: $cardDisplayName',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: AppColors.pastelMintText,
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.star, color: AppColors.brandPrimary, size: 14),
-                    SizedBox(width: 4),
-                    Text(
-                      'MEJOR OPCIÓN HOY',
-                      style: TextStyle(
-                        color: AppColors.brandPrimary,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
-                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 DateFormatter.formatShort(recommendation.evaluationDate),
-                style: const TextStyle(
-                  color: AppColors.textSubtleDark,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                style: TextStyle(
+                  color: isDark ? AppColors.textSubtleDark : AppColors.slate400,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
+
           const SizedBox(height: 14),
 
-          // Título y Nombre de la Tarjeta Recomendada
+          // Título Principal
           Text(
             recommendation.headline,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textHighDark,
+            style: TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.w800,
+              color: isDark ? AppColors.textHighDark : AppColors.slate900,
+              letterSpacing: -0.3,
+              height: 1.25,
             ),
           ),
-          const SizedBox(height: 2),
+
+          const SizedBox(height: 3),
+
+          // Emisor y Últimos 4
           Text(
-            '${card.issuerName} • ${card.last4.isNotEmpty ? "•••• ${card.last4}" : card.productName}',
+            '${card.issuerName} ${card.last4.isNotEmpty ? "•••• ${card.last4}" : ""}',
             style: const TextStyle(
-              color: AppColors.brandPrimary,
-              fontSize: 13,
+              color: AppColors.pastelMintText,
+              fontSize: 12.5,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 6),
+
+          const SizedBox(height: 8),
 
           // Justificación en lenguaje claro y empático
           Text(
             recommendation.summaryExplanation,
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.textMediumDark,
-              height: 1.4,
+            style: TextStyle(
+              fontSize: 13.5,
+              color: isDark ? AppColors.textMediumDark : AppColors.slate600,
+              height: 1.45,
             ),
           ),
+
           const SizedBox(height: 16),
 
-          // Métricas Clave de la Recomendación
+          // Métricas Clave de la Recomendación (Pastel Pill Chips)
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
               _buildMetricChip(
-                icon: Icons.timer_outlined,
-                label: '${cycle.financingDaysAvailable} días de pago',
-                color: AppColors.brandPrimary,
+                icon: Icons.schedule_rounded,
+                label: '${cycle.financingDaysAvailable} días sin intereses',
+                bg: isDark ? Colors.black.withValues(alpha: 0.3) : AppColors.pastelMintBg,
+                border: isDark ? AppColors.brandPrimary.withValues(alpha: 0.3) : AppColors.pastelMintBorder,
+                text: AppColors.pastelMintText,
               ),
+              if (winner.cashbackResult.effectiveRate > 0)
+                _buildMetricChip(
+                  icon: Icons.savings_outlined,
+                  label: 'Cashback: ${winner.cashbackResult.effectiveRate.toStringAsFixed(1)}%',
+                  bg: isDark ? Colors.black.withValues(alpha: 0.3) : AppColors.pastelLavenderBg,
+                  border: isDark ? AppColors.brandSecondary.withValues(alpha: 0.3) : AppColors.pastelLavenderBorder,
+                  text: AppColors.pastelLavenderText,
+                ),
               _buildMetricChip(
-                icon: Icons.savings_outlined,
-                label: 'Hasta ${winner.cashbackResult.effectiveRate.toStringAsFixed(1)}% cashback',
-                color: AppColors.brandSecondary,
-              ),
-              _buildMetricChip(
-                icon: Icons.event_available,
+                icon: Icons.event_available_rounded,
                 label: 'Paga el ${DateFormatter.formatShort(cycle.paymentDueDate)}',
-                color: AppColors.brandGold,
+                bg: isDark ? Colors.black.withValues(alpha: 0.3) : AppColors.pastelAmberBg,
+                border: isDark ? AppColors.brandGold.withValues(alpha: 0.3) : AppColors.pastelAmberBorder,
+                text: AppColors.pastelAmberText,
               ),
             ],
           ),
+
           const SizedBox(height: 18),
 
           // Botones de Acción
@@ -180,22 +257,48 @@ class HeroRecommendationCard extends StatelessWidget {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: onSimulateTap,
-                  icon: const Icon(Icons.calculate_outlined, size: 18),
+                  icon: const Icon(Icons.arrow_forward_rounded, size: 16),
                   label: const Text('Simular Compra'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.brandPrimary,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 13),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               OutlinedButton.icon(
                 onPressed: onCompareTap,
-                icon: const Icon(Icons.compare_arrows, size: 18),
+                icon: const Icon(Icons.compare_arrows_rounded, size: 16),
                 label: const Text('Comparar'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.textHighDark,
-                  side: const BorderSide(color: AppColors.darkBorder),
+                  foregroundColor: isDark ? AppColors.textHighDark : AppColors.slate700,
+                  backgroundColor: isDark ? Colors.transparent : Colors.white,
+                  side: BorderSide(
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.15)
+                        : AppColors.softBorder,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 13,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -208,26 +311,28 @@ class HeroRecommendationCard extends StatelessWidget {
   Widget _buildMetricChip({
     required IconData icon,
     required String label,
-    required Color color,
+    required Color bg,
+    required Color border,
+    required Color text,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5.5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        color: bg,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: border, width: 0.8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 14),
+          Icon(icon, color: text, size: 13.5),
           const SizedBox(width: 6),
           Text(
             label,
             style: TextStyle(
-              color: color,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              color: text,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],

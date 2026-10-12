@@ -1,10 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../data/repositories/loan_repository_impl.dart';
 import '../../domain/models/loan.dart';
 import '../../domain/repositories/loan_repository.dart';
-import '../../data/repositories/local_loan_repository.dart';
 
 final loanRepositoryProvider = Provider<ILoanRepository>((ref) {
-  return LocalLoanRepository();
+  final userId = ref.watch(currentUserIdProvider);
+  return LoanRepositoryImpl(getUserId: () => userId);
+});
+
+final loansStreamProvider = StreamProvider<List<Loan>>((ref) {
+  final repo = ref.watch(loanRepositoryProvider);
+  return repo.watchLoans();
 });
 
 class LoansNotifier extends Notifier<AsyncValue<List<Loan>>> {
@@ -48,4 +55,5 @@ class LoansNotifier extends Notifier<AsyncValue<List<Loan>>> {
   }
 }
 
-final loansProvider = NotifierProvider<LoansNotifier, AsyncValue<List<Loan>>>(LoansNotifier.new);
+final loansProvider =
+    NotifierProvider<LoansNotifier, AsyncValue<List<Loan>>>(LoansNotifier.new);

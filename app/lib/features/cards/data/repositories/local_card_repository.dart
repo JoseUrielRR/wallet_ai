@@ -22,12 +22,11 @@ class LocalCardRepository implements ICardRepository {
             .map((item) => UserCard.fromMap(item as Map<String, dynamic>))
             .toList();
       } else {
-        // Cargar datos demo por defecto si es la primera vez
-        _cachedCards = List.from(DemoCardsData.initialDemoCards);
+        _cachedCards = [];
         await _saveToDisk();
       }
     } catch (_) {
-      _cachedCards = List.from(DemoCardsData.initialDemoCards);
+      _cachedCards = [];
     }
     _initialized = true;
     _cardsStreamController.add(_cachedCards);

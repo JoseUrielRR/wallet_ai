@@ -26,50 +26,67 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.softBackground,
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkSurface : AppColors.softSurface,
           border: Border(
-            top: BorderSide(color: AppColors.darkBorder, width: 0.8),
+            top: BorderSide(
+              color: isDark ? AppColors.darkBorder : AppColors.softBorder,
+              width: 0.8,
+            ),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.3)
+                  : const Color(0x0A0F172A),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
+            ),
+          ],
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
           type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.darkSurface,
-          selectedItemColor: AppColors.brandPrimary,
-          unselectedItemColor: AppColors.textSubtleDark,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal, fontSize: 11),
+          backgroundColor: isDark ? AppColors.darkSurface : AppColors.softSurface,
+          selectedItemColor: isDark ? AppColors.brandPrimary : AppColors.pastelMintText,
+          unselectedItemColor: isDark ? AppColors.textSubtleDark : AppColors.slate400,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11),
+          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
+          elevation: 0,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.dashboard_outlined),
-              activeIcon: Icon(Icons.dashboard),
+              activeIcon: Icon(Icons.dashboard_rounded),
               label: 'Inicio',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_balance_wallet_outlined),
-              activeIcon: Icon(Icons.account_balance_wallet),
+              activeIcon: Icon(Icons.account_balance_wallet_rounded),
               label: 'Billetera',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined),
-              activeIcon: Icon(Icons.calendar_month),
+              activeIcon: Icon(Icons.calendar_month_rounded),
               label: 'Calendario',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.receipt_long_outlined),
-              activeIcon: Icon(Icons.receipt_long),
+              activeIcon: Icon(Icons.receipt_long_rounded),
               label: 'Actividad',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
+              icon: Icon(Icons.person_outline_rounded),
+              activeIcon: Icon(Icons.person_rounded),
               label: 'Perfil',
             ),
           ],

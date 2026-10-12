@@ -40,11 +40,11 @@ class LocalLoanRepository implements ILoanRepository {
             .map((item) => Loan.fromMap(item as Map<String, dynamic>))
             .toList();
       } else {
-        _cachedLoans = List.from(_initialDemoLoans);
+        _cachedLoans = [];
         await _saveToDisk();
       }
     } catch (_) {
-      _cachedLoans = List.from(_initialDemoLoans);
+      _cachedLoans = [];
     }
     _initialized = true;
     _loansStreamController.add(_cachedLoans);
